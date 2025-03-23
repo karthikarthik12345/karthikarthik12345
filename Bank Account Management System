@@ -1,0 +1,100 @@
+class BankAccount:
+    def __init__(self, customer_name, customer_id):
+        self.customer_name = customer_name
+        self.customer_id = customer_id
+        self.balance = 0.0
+        self.prev_transaction = 0.0
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            self.prev_transaction = amount
+        else:
+            print("Invalid deposit amount. Please enter a positive value.")
+
+    def withdraw(self, amount):
+        if amount > 0 and self.balance >= amount:
+            self.balance -= amount
+            self.prev_transaction = -amount
+        elif amount <= 0:
+            print("Invalid withdrawal amount. Please enter a positive value.")
+        else:
+            print("Bank balance insufficient.")
+
+    def get_previous_transaction(self):
+        if self.prev_transaction > 0:
+            print(f"Deposited: {self.prev_transaction}")
+        elif self.prev_transaction < 0:
+            print(f"Withdrawn: {abs(self.prev_transaction)}")
+        else:
+            print("No transaction occurred.")
+
+    def menu(self):
+        print(f"Welcome {self.customer_name}")
+        print(f"Your ID: {self.customer_id}\n")
+
+        print("a) Check Balance")
+        print("b) Deposit Amount")
+        print("c) Withdraw Amount")
+        print("d) Previous Transaction")
+        print("e) Exit")
+
+        while True:
+            try:
+                print("********************************************")
+                option = input("Choose an option: ").lower()
+                print("\n")
+
+                if option == 'a':
+                    print("......................")
+                    print(f"Balance = {self.balance}")
+                    print("......................\n")
+                elif option == 'b':
+                    print("......................")
+                    try:
+                        amount = float(input("Enter an amount to deposit: "))
+                        self.deposit(amount)
+                    except ValueError:
+                        print("Invalid input. Please enter a numeric value.")
+                    print("......................\n")
+                elif option == 'c':
+                    print("......................")
+                    try:
+                        amount = float(input("Enter an amount to withdraw: "))
+                        self.withdraw(amount)
+                    except ValueError:
+                        print("Invalid input. Please enter a numeric value.")
+                    print("......................\n")
+                elif option == 'd':
+                    print("......................")
+                    print("Previous Transaction:")
+                    self.get_previous_transaction()
+                    print("......................\n")
+                elif option == 'e':
+                    print("......................")
+                    break
+                else:
+                    print("Invalid option. Please choose a valid option.")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+
+        print("Thank you for using our banking services")
+
+def main():
+    try:
+        print("Enter your 'Name' and 'CustomerId' to access your Bank account")
+        name = input("Name: ")
+        customer_id = input("Customer ID: ")
+
+        if not name.strip() or not customer_id.strip():
+            raise ValueError("Name and Customer ID cannot be empty.")
+
+        bank_account = BankAccount(name, customer_id)
+        bank_account.menu()
+    except ValueError as e:
+        print(f"Input Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
